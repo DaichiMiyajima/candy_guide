@@ -1,0 +1,121 @@
+/*===============================================
+●style.css 画面の横幅が550px以上
+===============================================*/
+@media screen and (min-width: 550px){
+.youtube2 {
+  position: relative;
+  width: 100%;
+  min-height:400px !important;
+  max-height:400px !important;
+}
+.youtube2 iframe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100% !important;
+  height: 100% !important;
+  min-height:274px !important;
+  max-height:400px !important;
+}
+}
+
+/*===============================================
+●tablet.css 画面の横幅が550pxまで
+===============================================*/
+@media screen and (max-width: 550px){
+.youtube2 {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  min-height:272px !important;
+}
+.youtube2 iframe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100% !important;
+  height: 100% !important;
+  min-height:274px !important;
+  max-height:400px !important;
+}
+}
+
+#animation{
+	margin-right: 0;
+	margin-left: 0;
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 100% !important;
+}
+
+.index{
+	margin-top:100px;
+}
+
+
+#moonartmake{
+	color:#FFF;
+	background-color:#666666;
+}
+
+#moonartrepair{
+	color:#FFF;
+	background-color:#666666;
+}
+
+#moonartreform{
+　　color: #000;
+  　background-color: #FFFFFF;
+}
+
+.border{
+	border: 0;
+	height: 1px;
+ 	background: #333;
+ 	background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc);
+}
+
+.img_explanation{
+	max-height:130px !important; 
+	min-height:130px !important; 
+}
+
+#topimage{
+	width:100%;
+}
+
+.form-control
+{
+	font-size: 16px;
+}
+
+@media screen and (max-width: 550px){
+
+.title1{
+   font-size: 18px;
+   font-weight: bold;
+}
+.description{
+	 font-size: 13px;
+}
+}
+@media screen and (max-width: 650px) and (min-width: 550px) {
+.title1{
+   font-size: 24px;
+   font-weight: bold;
+}
+.description{
+	 font-size: 21px;
+}
+}
+
+@media screen and (max-width: 767px) and (min-width: 650px) {
+.title1{
+   font-size: 28px;
+   font-weight: bold;
+}
+.description{
+	 font-size: 25px;
+}
+}
+
