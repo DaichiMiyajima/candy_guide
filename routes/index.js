@@ -38,6 +38,7 @@ router.get('/', function(req, res, next) {
 						console.log("Failed again!!!!", error);
 					}else{
 						console.log("suceess!!!!!", error);
+						res.render('index', { title: 'sucess' });
 					}
 				});
 			}
@@ -45,11 +46,11 @@ router.get('/', function(req, res, next) {
 		} else {
 			// We'll never get here, as the page will redirect on success.
 			console.log("success");
-			res.render('index', { title: '' });
+			res.render('index', { title: 'sucess' });
 			
 		}
 	});
-	
+	res.render('index', { title: 'bad' });
 	
 	
 });
