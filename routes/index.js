@@ -45,11 +45,12 @@ router.get('/', function(req, res, next) {
 		} else {
 			// We'll never get here, as the page will redirect on success.
 			console.log("success");
+			res.render('index', { title: '' });
 			
 		}
 	});
 	
-	res.render('index', { title: '' });
+	
 	
 });
 
