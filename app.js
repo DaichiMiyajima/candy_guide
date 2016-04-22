@@ -10,6 +10,7 @@ var xml2js = require('xml2js');
 var fs = require('fs');
 var config = require(__dirname + '/lib/config.js').config;
 var index = require('./routes/index');
+var login = require('./routes/login');
 var mysql = require('mysql');
 
 var app = express();
@@ -24,7 +25,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public',express.static(__dirname + '/public'));
 
+// Register the callback to be fired every time auth state changes
 app.use('/',index);
+app.get('/login',login);
 
 app.listen(3003);
 

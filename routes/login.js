@@ -1,17 +1,11 @@
 var express = require('express');
 var request = require('request');
 var Firebase = require("firebase");
-var ref = new Firebase("https://candyguide.firebaseio.com");
 var router = express.Router();
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-
-	var authData = ref.getAuth();
-	console.log("authData(index):"+authData);
-	//console.log("authData(req):"+req);
-
+router.get('/login', function(req, res, next) {
 	//ヘッダーを定義
 	var headers = {
 		'Content-Type':'application/json'
@@ -28,11 +22,10 @@ router.get('/', function(req, res, next) {
 	//リクエスト送信
 	request(options, function (error, response, body) {
 		//コールバックで色々な処理
-		//console.log('body::::::::::::::'+JSON.stringify(body));
+		console.log('body::::::::::::::'+JSON.stringify(body));
 	});
 
-	/* Google Map Screen*/	
-	res.render('index', { title: 'bad' });
+/* Google Map Screen*/	
+res.render('login', { title: 'login' });
 });
-
 module.exports = router;
