@@ -19,9 +19,3 @@ function init() {
 			document.getElementById('message').innerHTML = 'Location APIがサポートされていません。';
 		}
 }
-
-
-google.maps.event.addListener(marker1, 'position_changed', update);
-function update() {
-	
-}

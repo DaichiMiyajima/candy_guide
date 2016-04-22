@@ -40,7 +40,14 @@ var markers = new Array();
 				title: arr[i][2]
 			});
 		markers.push(marker);
+		google.maps.event.addListener(markers[i], 'position_changed', update);
+		console.log(markers[i]);
 		});
 	});
+	update();
 });
 
+function update() {
+	console.log("test");
+	alert("changed");
+}
