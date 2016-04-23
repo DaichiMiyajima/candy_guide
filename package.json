@@ -12,14 +12,6 @@
     "ejs": "~2.3.3",
     "express": "~4.13.1",
     "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0",
-    "facebook-node-sdk": "*",
-    "googleapis": "~5.0.0",
-    "google-auth-library": "~0.9.7",
-    "express-mysql-session": "~1.0.0-rc.0",
-    "express-session": "~1.13.0",
-    "firebase": "~2.4.2",
-    "firebase-token-generator": "~2.0.0",
-    "geofire": "~4.0.0"
+    "serve-favicon": "~2.3.0"
   }
 }
