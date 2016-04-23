@@ -5,13 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
-var xml = require('xml');
 var xml2js = require('xml2js');
 var fs = require('fs');
-var config = require(__dirname + '/lib/config.js').config;
 var index = require('./routes/index');
 var login = require('./routes/login');
-var mysql = require('mysql');
 
 var app = express();
 
@@ -31,10 +28,9 @@ app.get('/login',login);
 
 app.listen(3003);
 
-
 app.get('/sitemap.xml', function(req, res) {
 	var parser = new xml2js.Parser();
-	fs.readFile(__dirname + '/views/sitemap.xml', function (err, data) {
+	fs.readFile(__dirname + '/seo/sitemap.xml', function (err, data) {
 		parser.parseString(data, function (err, result) {
 		res.send(result);
 		});
@@ -43,7 +39,7 @@ app.get('/sitemap.xml', function(req, res) {
 });
 
 app.get('/robots.txt', function(req, res) {
-	fs.readFile(__dirname + '/robots.txt', 'utf-8',function (err, data) {
+	fs.readFile(__dirname + '/seo/robots.txt', 'utf-8',function (err, data) {
 		res.send(data);
 	});
 	

@@ -23,8 +23,6 @@ function facebook_login(){
 				//Move to other screen
 				window.location.href = "./" ;
 			});
-			
-			
 		}
 	});
 }

@@ -44,7 +44,6 @@ var markers = new Array();
 		console.log(markers[i]);
 		});
 	});
-	update();
 });
 
 function update() {
