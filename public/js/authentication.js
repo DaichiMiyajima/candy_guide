@@ -14,6 +14,7 @@ function facebook_login(){
             navigator.geolocation.getCurrentPosition(function(position) {
                 var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 ref.child("users").child(authData.uid).set({
+                    uid:authData.uid,
                     provider: authData.provider,
                     name: authData.facebook.displayName,
                     latitude:position.coords.latitude,
@@ -44,6 +45,7 @@ function twitter_login(){
                 // user authenticated with Firebase
                 var usersRef = ref.child("users");
                 ref.child("users").child(authData.uid).set({
+                    uid:authData.uid,
                     provider: authData.provider,
                     name: authData.twitter.displayName,
                     latitude:position.coords.latitude,
