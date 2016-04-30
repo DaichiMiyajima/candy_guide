@@ -26,7 +26,7 @@ app.use('/public',express.static(__dirname + '/public'));
 app.use('/',index);
 app.get('/login',login);
 
-app.listen(3003);
+app.listen(8080);
 
 app.get('/sitemap.xml', function(req, res) {
 	var parser = new xml2js.Parser();
