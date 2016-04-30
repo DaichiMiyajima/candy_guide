@@ -7,7 +7,6 @@ var geoFire = new GeoFire(ref);
 var map;
 var yourlatitude ;
 var yourlongtitude ;
-var i = 0;
 var markers = new Array();
 
 /* When loading screen */
@@ -28,23 +27,30 @@ function init() {
               snapshot.forEach(function(childSnapshot) {
                   var childData = childSnapshot.val();
                   createMarker(childData.latitude, childData.longitude, childData.name, childData.profileimage, childSnapshot.key(), map, markercreate);
-                  i = i + 1;
               });
               //Monitor location
-              watchID = navigator.geolocation.watchPosition(onSuccess, onError);
+              watchID = navigator.geolocation.watchPosition(onSuccess, onError,{enableHighAccuracy: false});
               }, function(e) {
                   document.getElementById('message').innerHTML = typeof e == 'string' ? e : e.message;
+                  alert(e.message);
               });
               } else {
                   document.getElementById('message').innerHTML = 'Location APIがサポートされていません。';
+                  alert("Location APIがサポートされていません。");
           }
     });
     // When changing the location
     ref.child("users").on('child_changed', function(snapshot, prevChildKey) {
         var chngedata = snapshot.val();
         for (var i = 0; i < markers.length; i++) {
-            if(markers[i]["key"] == prevChildKey){
-                //markers[i].setMap(null);
+            if(markers[i]["key"] == chngedata.uid){
+                markers[i].setPosition(new google.maps.LatLng(chngedata.latitude, chngedata.longitude));
+                var authData = ref.getAuth();
+                console.log("yourid:" + authData.uid);
+                console.log("setposition:" + chngedata.uid);
+                if(authData.uid == chngedata.uid){
+                    map.panTo(new google.maps.LatLng(chngedata.latitude, chngedata.longitude));
+                }
             }
         }
     });
