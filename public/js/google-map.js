@@ -38,7 +38,6 @@ function init() {
                   alert(e.message);
               });
               } else {
-                  document.getElementById('message').innerHTML = 'Location APIがサポートされていません。';
                   alert("Location APIがサポートされていません。");
           }
     });
@@ -79,8 +78,6 @@ function onSuccess(position) {
 
 // エラー時のコールバック関数は PositionError オブジェクトを受けとる
 function onError(error) {
-    alert('コード: '        + error.code    + '\n' +
-          'メッセージ: '    + error.message + '\n');
 }
 
 // marker作成
