@@ -31,7 +31,6 @@ function init() {
               //Monitor location
               watchID = navigator.geolocation.watchPosition(onSuccess, onError,{enableHighAccuracy: false});
               }, function(e) {
-                  document.getElementById('message').innerHTML = typeof e == 'string' ? e : e.message;
                   alert(e.message);
               });
               } else {
