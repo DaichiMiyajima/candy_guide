@@ -89,8 +89,7 @@ function markercreate(latitude,longitude,map,title,key,imagepath) {
         position: new google.maps.LatLng(latitude, longitude),
         map: map,
         icon: imagepath,
-        title: title,
-        draggable: true
+        title: title
     });
     marker["key"] = key;
     var jugde = "ok";
