@@ -46,8 +46,6 @@ function init() {
             if(markers[i]["key"] == chngedata.uid){
                 markers[i].setPosition(new google.maps.LatLng(chngedata.latitude, chngedata.longitude));
                 var authData = ref.getAuth();
-                console.log("yourid:" + authData.uid);
-                console.log("setposition:" + chngedata.uid);
                 if(authData.uid == chngedata.uid){
                     map.panTo(new google.maps.LatLng(chngedata.latitude, chngedata.longitude));
                 }
