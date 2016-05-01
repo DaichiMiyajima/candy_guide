@@ -11,7 +11,11 @@ var markers = new Array();
 
 /* When loading screen */
 function init() {
-// Get a database reference to our posts
+    var authData = ref.getAuth();
+    if (!authData) {
+        window.location.href = "./login" ;
+    }
+    // Get a database reference to our posts
     ref.child("users").once('value', function(snapshot, prevChildKey) {
           if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(function(position) {
