@@ -4,14 +4,13 @@ google.maps.event.addDomListener(window, 'load', init);
 var ref = new Firebase("https://candyguide.firebaseio.com/");
 // Create a GeoFire index
 var geoFire = new GeoFire(ref);
-var map;
-var yourlatitude ;
-var yourlongtitude ;
+var googlemap;
 var markers = new Array();
 
 /* When loading screen */
 function init() {
     var authData = ref.getAuth();
+    var usersRef = ref.child("users").child(authData.uid);
     if (!authData) {
         window.location.href = "./login" ;
     }
@@ -19,26 +18,43 @@ function init() {
     ref.child("users").once('value', function(snapshot, prevChildKey) {
           if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(function(position) {
-              yourlatitude = position.coords.latitude;
-              yourlongtitude = position.coords.longitude;
-              var mylatlng = new google.maps.LatLng(yourlatitude, yourlongtitude);
-              var mapOptions = {
-                  zoom: 17,
-                  center: mylatlng,
-                  mapTypeId: google.maps.MapTypeId.ROADMAP
-              }
-              map = new google.maps.Map(document.getElementById("map"),mapOptions);
-              snapshot.forEach(function(childSnapshot) {
-                  var childData = childSnapshot.val();
-                  createMarker(childData.latitude, childData.longitude, childData.name, childData.profileimage, childSnapshot.key(), map, markercreate);
-              });
-              //Monitor location
-              watchID = navigator.geolocation.watchPosition(onSuccess, onError,{enableHighAccuracy: false});
-              }, function(e) {
+                  var mylatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                  //user update
+                  usersRef.update({
+                      latitude:position.coords.latitude,
+                      longitude:position.coords.longitude,
+                  });
+                  
+                  var mapOptions = {
+                      zoom: 17,
+                      center: mylatlng,
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                  }
+                  googlemap = new google.maps.Map(document.getElementById("map"),mapOptions);
+                  snapshot.forEach(function(childSnapshot) {
+                      var childData = childSnapshot.val();
+                      createMarker(childData.latitude, childData.longitude, childData.name, childData.profileimage, childSnapshot.key(), googlemap, markercreate);
+                  });
+                  //Monitor location
+                  watchID = navigator.geolocation.watchPosition(
+                      // onSuccess Geolocation
+                      function(position) {
+                        //within 50m → update user
+                        if(position.coords.accuracy<=100){
+                            usersRef.update({
+                                latitude:position.coords.latitude,
+                                longitude:position.coords.longitude,
+                            });
+                        }
+                      }, 
+                      // エラー時のコールバック関数は PositionError オブジェクトを受けとる
+                      function(error) {},
+                      {enableHighAccuracy: true,timeout:10000,maximumAge: 100}
+              );},function(e) {
                   alert(e.message);
               });
-              } else {
-                  alert("Location APIがサポートされていません。");
+          } else {
+              alert("Location APIがサポートされていません。");
           }
     });
     // When changing the location
@@ -49,7 +65,7 @@ function init() {
                 markers[i].setPosition(new google.maps.LatLng(chngedata.latitude, chngedata.longitude));
                 var authData = ref.getAuth();
                 if(authData.uid == chngedata.uid){
-                    map.panTo(new google.maps.LatLng(chngedata.latitude, chngedata.longitude));
+                    googlemap.panTo(new google.maps.LatLng(chngedata.latitude, chngedata.longitude));
                 }
             }
         }
@@ -58,50 +74,34 @@ function init() {
     ref.child("users").on('child_added', function(snapshot, addChildKey) {
         if(addChildKey){
             var adddata = snapshot.val();
-            createMarker(adddata.latitude, adddata.longitude, adddata.name, adddata.profileimage, adddata.uid, map, markercreate);
+            createMarker(adddata.latitude, adddata.longitude, adddata.name, adddata.profileimage, adddata.uid, googlemap, markercreate);
         }
     });
 }
 
-// onSuccess Geolocation
-function onSuccess(position) {
-    //alert(position.coords.latitude);
-    yourlatitude = position.coords.latitude;
-    yourlongtitude = position.coords.longitude;
-    var authData = ref.getAuth();
-    var usersRef = ref.child("users").child(authData.uid);
-    usersRef.update({
-        latitude:position.coords.latitude,
-        longitude:position.coords.longitude,
-    });
-}
-
-// エラー時のコールバック関数は PositionError オブジェクトを受けとる
-function onError(error) {
-}
 
 // marker作成
-function markercreate(latitude,longitude,map,title,key,imagepath) {
+function markercreate(latitude,longitude,googlemap,title,key,imagepath) {
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latitude, longitude),
-        map: map,
+        map: googlemap,
         icon: imagepath,
         title: title
     });
     marker["key"] = key;
-    var jugde = "ok";
+    var jugde = new Boolean(true);
     for (var i = 0; i < markers.length; i++) {
         if(markers[i]["key"] == key){
-            jugde = "ng";
+            jugde = false;
         }
     }
-    if(jugde == "ok"){
+    if(jugde){
         markers.push(marker);
     }
 }
 
 // canvasでimage加工
-function createMarker(latitude,longitude,title,imagepath,key,map,callback) {
+function createMarker(latitude,longitude,title,imagepath,key,googlemap,callback) {
     // attach image to bg canvas
     var img =new Image();
     img.crossOrigin = "Anonymous";
@@ -126,6 +126,6 @@ function createMarker(latitude,longitude,title,imagepath,key,map,callback) {
         bgCtx.stroke();
         
         bgCtx.drawImage(img, 75, 137,50,50);
-        callback(latitude,longitude,map,title,key,bg.toDataURL());
+        callback(latitude,longitude,googlemap,title,key,bg.toDataURL());
     }
 }
