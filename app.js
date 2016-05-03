@@ -29,27 +29,25 @@ app.get('/login',login);
 app.listen(8080);
 
 app.get('/sitemap.xml', function(req, res) {
-	var parser = new xml2js.Parser();
-	fs.readFile(__dirname + '/seo/sitemap.xml', function (err, data) {
-		parser.parseString(data, function (err, result) {
-		res.send(result);
-		});
-	});
-	
+    var parser = new xml2js.Parser();
+    fs.readFile(__dirname + '/seo/sitemap.xml', function (err, data) {
+        parser.parseString(data, function (err, result) {
+            res.send(result);
+        });
+    });
 });
 
 app.get('/robots.txt', function(req, res) {
-	fs.readFile(__dirname + '/seo/robots.txt', 'utf-8',function (err, data) {
-		res.send(data);
-	});
-	
+    fs.readFile(__dirname + '/seo/robots.txt', 'utf-8',function (err, data) {
+        res.send(data);
+    });
 });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
@@ -57,23 +55,23 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-	app.use(function(err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: err
-		});
-	});
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-	res.status(err.status || 500);
-	res.render('error', {
-		message: err.message,
-		error: {}
-	});
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
 
