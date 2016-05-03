@@ -3,16 +3,20 @@
 (function(){
     var sim = {};
     sim.Create = function Create(){
+        this.firebase = "";
         this.plugins = [];
     }
 
     sim.Create.prototype = {
         user: {
-            name: null,
-            user_id: null
+            name: null
+        },
+        // register Firebase
+        registerFirebase: function(){
+            this.firebase = new Firebase("https://candyguide.firebaseio.com");
         },
         // register more plugins for stream processing
-        addGPSPlugins: function (plugins) {
+        addPlugins: function (plugins) {
             this.plugins.push.apply(this.plugins, plugins);
         },
         //where we draw
@@ -32,8 +36,9 @@
             }
             next();
         },
-        //count is icremented in the gpsPlugin
+        //count is icremented in the streamPlugin
         count:0
     };
     window.sim = sim;
 })()
+
