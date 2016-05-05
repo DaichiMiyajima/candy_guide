@@ -4,6 +4,7 @@
     var sim = {};
     sim.Create = function Create(){
         this.plugins = [];
+        this.GPSPlugins = [];
     }
 
     sim.Create.prototype = {
@@ -14,6 +15,11 @@
         addPlugins: function (plugins) {
             this.plugins.push.apply(this.plugins, plugins);
         },
+        
+        addGPSPlugins: function (plugins) {
+            this.GPSPlugins.push.apply(this.plugins, plugins);
+        },
+
         //where we draw
         canvas: function(){
             return $("#map");

@@ -53,6 +53,7 @@
     }
     
     window.gpsPlugins = [
+        plugins.checkLocationAPI,
         plugins.currentPosition,
         plugins.watchPosition
     ];

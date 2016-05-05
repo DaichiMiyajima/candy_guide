@@ -10,9 +10,8 @@
         //using jQuery everywhere
         $(function(){
 
-            // register firebase
-            sim.registerFirebase();
             // sim uses plugins with realtime way
+            sim.addPlugins(firebasePlugins);
             sim.addgpsPlugins(gpsPlugins);
 
             // login functions are loaded when the page is loaded
