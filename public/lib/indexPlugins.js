@@ -1,5 +1,5 @@
 /* 
- *  list of plugin for initialization
+ *  list of plugin for index functions
  */
 
 (function(){
@@ -13,7 +13,7 @@
                     sim.firebase.authWithOAuthPopup($(this).text(),login);
                 });
 
-                var login = function(eror){
+                var login = function(error){
                     if (error) {
                         if (error.code === "TRANSPORT_UNAVAILABLE") {
                             // fall-back to browser redirects, and pick up the session
@@ -27,6 +27,10 @@
             }
         }
     }
+    
+    window.indexPlugins = [
+        plugins.navigation
+    ];
 
-}
+})()
 

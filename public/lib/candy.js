@@ -16,7 +16,7 @@
             sim.addgpsPlugins(gpsPlugins);
 
             // login functions are loaded when the page is loaded
-            loginPlugins.forEach(function(plugin){
+            indexPlugins.forEach(function(plugin){
                 plugin.func.call(function(){},sim,plugin);
             });
 
@@ -47,7 +47,7 @@
             }
 
             // connect firebase
-            var candy = client.connect(connect);
+            var candy = firebase.connect(connect);
         })
     })()
 })()

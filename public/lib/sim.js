@@ -3,17 +3,12 @@
 (function(){
     var sim = {};
     sim.Create = function Create(){
-        this.firebase = "";
         this.plugins = [];
     }
 
     sim.Create.prototype = {
         user: {
             name: null
-        },
-        // register Firebase
-        registerFirebase: function(){
-            this.firebase = new Firebase("https://candyguide.firebaseio.com");
         },
         // register more plugins for stream processing
         addPlugins: function (plugins) {
