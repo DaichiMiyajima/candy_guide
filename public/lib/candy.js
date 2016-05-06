@@ -24,10 +24,9 @@
 
             var connect = function(data){
                 // Authorization was fine
-                if(data.auth = "auth_OK"){
+                if(data.auth){
                     $("#header").hide();
                     $("#candy_guide").show();
-                    sim.user = data.info;
 
                     if(initial){
                         initial = false;
@@ -37,7 +36,7 @@
                         });
                     }
                 }else if(data.user){
-                    // new user launch GPS
+                    // new user launch
                     var user = {};
                     user.data = data.user;
                     sim.process(user);

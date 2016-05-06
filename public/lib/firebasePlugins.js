@@ -5,12 +5,16 @@
 (function(){
 
     var plugins = {
+            tentative: {
+                func: function tentative(data, sim, plugins) {
 
+                }
+            }
         }
     }
 
-    window.realtimePlugins = [
-        plugins.executeGPSPlugins:
+    window.firebasePlugins = [
+        plugins.tentative
     ];
 })()
 
