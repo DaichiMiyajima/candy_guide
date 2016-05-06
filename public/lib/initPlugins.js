@@ -19,9 +19,9 @@
             var idle = new Idle();
             idle.onHidden = firebase.onIdle;
             idle.onAway = firebase.onAway;
-			idle.onAwayBack = firebase.onBack;
-			idle.setAwayTimeout(2000);
-			idle.start();
+            idle.onAwayBack = firebase.onBack;
+            idle.setAwayTimeout(2000);
+            idle.start();
         }
     }
 
