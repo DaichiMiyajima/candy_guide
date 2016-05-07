@@ -1,13 +1,13 @@
 // represent the sim
 
 (function(){
-    var sim = {};
-    sim.Create = function Create(){
+    var userSim = {};
+    userSim.Create = function Create(){
         this.plugins = [];
         this.GPSPlugins = [];
     }
 
-    sim.Create.prototype = {
+    userSim.Create.prototype = {
         user: {
             name: null,
             uid: null,
@@ -20,7 +20,7 @@
         },
         
         addGPSPlugins: function (plugins) {
-            this.GPSPlugins.push.apply(this.plugins, plugins);
+            this.GPSPlugins.push.apply(this.GPSPlugins, plugins);
         },
 
         //where we draw
@@ -43,5 +43,5 @@
         //count is icremented in the streamPlugin
         count:0
     };
-    window.sim = sim;
+    window.userSim = userSim;
 })()

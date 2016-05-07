@@ -14,7 +14,7 @@
         renderMap: {
             func: function renderMap(data, sim, plugin) {
                 // If own user changing location. Draw map
-                if(data.user.key == sim.user.info.uid && data.user.location){
+                if(data.user.key == sim.user.uid && data.user.location){
                     var latlng = new google.maps.LatLng(data.user.location[0] ,data.user.location[1]);
                     var mapOptions = {
                         zoom: 17,
@@ -22,10 +22,10 @@
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     }
                     if(!map){
-                        map = new google.maps.Map(sim.canvas() ,mapOptions);
+                        map = new google.maps.Map($('#map')[0] ,mapOptions);
                     }
                     else{
-                        map.panTo(latlng);
+                        //map.panTo(latlng);
                     }
                 }
                 this();
@@ -46,9 +46,9 @@
         },
         createInfoWindow:{
             func: function createInfoWindow(data, sim, plugin){
-                if(!infoWindow[data.user.key] && data.user.info.presence){
+                if(!infoWindow[data.user.key] && data.user.info.idle.presence){
                     infoWindow[data.user.key] = new google.maps.InfoWindow({ 
-                        content: data.user.info.presence
+                        content: data.user.info.idle.presence
                     });
                 }
                 this();
@@ -97,21 +97,23 @@
                     markers[data.user.key].setPosition(latlng);
                 }
                 // update icon
-                else if(!markers[data.user.key].getIcon() && icons[data.user.key]){
+                if(icons[data.user.key]){
                     markers[data.user.key].setIcon(icons[data.user.key]);
                 }
                 // update idles
-                else if(infoWindow[data.user.key] && data.user.info.presence){
-                    infoWindow[data.user.key].setContent(data.user.info.presence);
+                if(infoWindow[data.user.key] && data.user.info.idle.presence){
+                    infoWindow[data.user.key].setContent(data.user.info.idle.presence);
                 }else{
                 }
                 this();
             }
         },   
         handleInfoWindow:{
-            func function handleInfoWindow(data, sim, plugin) {
-                if(!infoWindow[data.user.key].view){
-                    infoWindow[data.user.key].open(map, makers[data.user.key]);
+            func : function handleInfoWindow(data, sim, plugin) {
+                if(infoWindow[data.user.key]){
+                    if(!infoWindow[data.user.key].view){
+                        infoWindow[data.user.key].open(map, markers[data.user.key]);
+                    }
                 }
                 this();
             }
@@ -121,6 +123,7 @@
     window.firebasePlugins = [
         plugins.renderMap,
         plugins.createMarkers,
+        plugins.createInfoWindow,
         plugins.createIcon,
         plugins.handleMarkers,
         plugins.handleInfoWindow

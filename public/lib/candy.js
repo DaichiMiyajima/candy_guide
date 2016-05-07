@@ -3,7 +3,7 @@
 (function(){
 
    var initial = true;
-   var sim = new sim.Create();
+   var sim = new userSim.Create();
 
    var start = (function(){
 
@@ -12,7 +12,7 @@
 
             // sim uses plugins with realtime way
             sim.addPlugins(firebasePlugins);
-            sim.addgpsPlugins(gpsPlugins);
+            sim.addGPSPlugins(gpsPlugins);
 
             // login functions are loaded when the page is loaded
             indexPlugins.forEach(function(plugin){
@@ -28,7 +28,7 @@
                     $("#header").hide();
                     $("#candy_guide").show();
                     // Register user
-                    stream.user = data.auth;
+                    sim.user = data.auth;
 
                     if(initial){
                         initial = false;
@@ -42,6 +42,7 @@
                     sim.process(data);
                 }else{
                     console.log(data);
+                }
             }
 
             // connect firebase

@@ -8,7 +8,6 @@ var multer = require('multer');
 var xml2js = require('xml2js');
 var fs = require('fs');
 var index = require('./routes/index');
-var login = require('./routes/login');
 
 var app = express();
 
@@ -24,7 +23,6 @@ app.use('/public',express.static(__dirname + '/public'));
 
 // Register the callback to be fired every time auth state changes
 app.use('/',index);
-app.get('/login',login);
 
 app.listen(8080);
 

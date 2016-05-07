@@ -9,7 +9,7 @@
         navigation: {
             func: function navigation(sim, plugin){
                 // login
-                $("#login").on("click",function(){
+                $("#login li").on("click",function(){
                     firebase.auth($(this).text());
                 });
             }

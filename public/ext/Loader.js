@@ -12,14 +12,14 @@
     };
     Loader.body = function(){
         //all modules
-        document.wirte('<script src="/ext/idle.js"></script>');
-        document.wirte('<script src="/lib/candy.js"></script>');
-        document.wirte('<script src="/lib/firebase.js"></script>');
-        document.wirte('<script src="/lib/firebasePlugins.js"></script>');
-        document.wirte('<script src="/lib/gpsPlugins.js"></script>');
-        document.wirte('<script src="/lib/indexPlugins.js"></script>');
-        document.wirte('<script src="/lib/initPlugins.js"></script>');
-        document.wirte('<script src="/lib/sim.js"></script>');
+        document.write('<script src="/ext/idle.js"></script>');
+        document.write('<script src="/lib/firebase.js"></script>');
+        document.write('<script src="/lib/firebasePlugins.js"></script>');
+        document.write('<script src="/lib/gpsPlugins.js"></script>');
+        document.write('<script src="/lib/indexPlugins.js"></script>');
+        document.write('<script src="/lib/initPlugins.js"></script>');
+        document.write('<script src="/lib/sim.js"></script>');
+        document.write('<script src="/lib/candy.js"></script>');
     };
     window.Loader = Loader;
 })();

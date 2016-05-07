@@ -63,13 +63,13 @@
 
     firebase.onIdle = function () {
         // not looking at page
-        ref.child('users').child('idle').child('presence').set('idle');
+        ref.child('users').child('uid').child('presence').set('idle');
     }
     firebase.onAway = function () {
-        ref.child('users').child('idle').child('presence').set('away');
+        ref.child('users').child('uid').child('presence').set('away');
     }
     firebase.onBack = function (isIdle, isAway) {
-        ref.child('users').child('idle').child('presence').set('online');
+        ref.child('users').child('uid').child('presence').set('online');
     }
 
     // all realtime actions
@@ -101,8 +101,8 @@
             if (snapshot.val()) {
                 // store timestamp
                 // We do not store any session info.
-                ref.child('users').child('idle').update({presence: 'online', began: Firebase.ServerValue.TIMESTAMP});
-                ref.child('users').child('idle').onDisconnect().update({presence: 'offline', End: Firebase.ServerValue.TIMESTAMP});
+                ref.child('users').child('uid').update({presence: 'online', began: Firebase.ServerValue.TIMESTAMP});
+                ref.child('users').child('uid').onDisconnect().update({presence: 'offline', End: Firebase.ServerValue.TIMESTAMP});
             }
         });
 
@@ -121,7 +121,7 @@
             //candy(data);
 
             //Listening for changed for users(whithin 10km only)
-            ref.child('users').on('value', function(snapshot) {
+            ref.child('users').on('child_changed', function(snapshot) {
                 if(snapshot){
                     var data = {};
                     data.user = {
@@ -137,7 +137,7 @@
             });
 
             //Listening for added for users(whithin 10km only)
-            ref.child('users').on('value', function(snapshot) {
+            ref.child('users').on('child_added', function(snapshot) {
                 if(snapshot){
                     var data = {};
                     data.user = {

@@ -22,13 +22,13 @@
         },
         // get current position
         currentPosition: {
-            func: function currentPosition(sim, plugin): {
+            func: function currentPosition(sim, plugin) {
                 navigator.geolocation.getCurrentPosition(function(position){
                     //within 100m
                     if(position.coords.accuracy<=100){
                         firebase.updatePosition(position);
-                    }, error, options
-                });
+                    }
+                }, error, options);
 
                 function error(err){
                     alert("Location ‚ÌŽæ“¾‚ÉŽ¸”s‚µ‚Ü‚µ‚½B");
@@ -44,13 +44,13 @@
         },
         // watch location
         watchPosition: {
-            func: function watchPosition(sim, plugin): {
+            func: function watchPosition(sim, plugin) {
                 navigator.geolocation.watchPosition(function(position){
                     //within 100m
                     if(position.coords.accuracy<=100){
                         firebase.updatePosition(position);
-                    }, error, options
-                });
+                    }
+                }, error, options);
 
                 function error(err){
                     alert("Location ‚ÌŽæ“¾‚ÉŽ¸”s‚µ‚Ü‚µ‚½B");
