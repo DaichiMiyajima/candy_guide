@@ -1,6 +1,6 @@
 (function(){
-    var scriptsLoader = {};
-    scriptsLoader.header = function(){ 
+    var Loader = {};
+    Loader.header = function(){ 
         //jQuery 2.1.1(http://jquery.com/)
         document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>');
         //firebase 2.4.2(https://www.firebase.com/)
@@ -10,9 +10,16 @@
         //google maps
         document.write('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCO32axBK69PMVZMgs_oPjKMltoQa4pKI4"></script>');
     };
-    scriptsLoader.body = function(){
+    Loader.body = function(){
         //all modules
-        document.wirte('');
+        document.wirte('<script src="/ext/idle.js"></script>');
+        document.wirte('<script src="/lib/candy.js"></script>');
+        document.wirte('<script src="/lib/firebase.js"></script>');
+        document.wirte('<script src="/lib/firebasePlugins.js"></script>');
+        document.wirte('<script src="/lib/gpsPlugins.js"></script>');
+        document.wirte('<script src="/lib/indexPlugins.js"></script>');
+        document.wirte('<script src="/lib/initPlugins.js"></script>');
+        document.wirte('<script src="/lib/sim.js"></script>');
     };
-    window.scriptsLoader = scriptsLoader;
+    window.Loader = Loader;
 })();
