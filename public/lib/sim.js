@@ -9,7 +9,10 @@
 
     sim.Create.prototype = {
         user: {
-            name: null
+            name: null,
+            uid: null,
+            provider: null,
+            profileimage: null
         },
         // register more plugins for stream processing
         addPlugins: function (plugins) {
@@ -42,4 +45,3 @@
     };
     window.sim = sim;
 })()
-

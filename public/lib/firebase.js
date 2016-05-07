@@ -35,7 +35,8 @@
                     uid:authData.uid,
                     provider: authData.provider,
                     name: authData.facebook.displayName,
-                    profileimage:authData.facebook.profileImageURL
+                    profileimage:authData.facebook.profileImageURL,
+                    presence: 'offline'
                 });
             }
             else{
@@ -62,13 +63,14 @@
     }
 
     firebase.onIdle = function () {
-        ref.child('presence').child(ref.getAuth().uid).set('idle');
+        // not looking at page
+        ref.child('users').child(authData.uid).child('presence').set('idle');
     }
     firebase.onAway = function () {
-        ref.child('presence').child(ref.getAuth().uid).set('away');
+        ref.child('users').child(authData.uid).child('presence').set('away');
     }
     firebase.onBack = function (isIdle, isAway) {
-        ref.child('presence').child(ref.getAuth().uid).set('online');
+        ref.child('users').child(authData.uid).child('presence').set('online');
     }
 
     // all realtime actions
@@ -85,53 +87,51 @@
             // Listen for user idling
             idle.on('value', function(snapshot) {
                 if (snapshot.val()) {
-
-                    ref.child('presence').child(ref.getAuth().uid).onDisconnect().set('offline');
-                    ref.child('presence').child(ref.getAuth().uid).set('online');
-
-                    // store session timestamp
-                    var sessionRef = ref.child('presence').child(authData.uid).push();
-                    sessionRef.child('ended').onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
-                    sessionRef.child('began').set(Firebase.ServerValue.TIMESTAMP);
-                }
-            });
-
-            //Listens for user data changes
-            ref.child('users').on('child_changed', function(childsnapshot, prevChildKey){
-                if(childsnapsnapshot){
-                    var data;
-                    data.user = snapshot.val();
-                    candy(data);
-                }    
-                else{
-                    console.log("no data fetched");
-                }
-            });
-
-            //Listen for user data added
-            ref.child('users').on('child_added', function(childsnapshot, prevChildKey){
-                if(childsnapsnapshot){
-                    var data;
-                    data.user = snapshot.val();
-                    candy(data);
-                }    
-                else{
-                    console.log("no data fetched");
+                    // store timestamp
+                    // We do not store any session info.
+                    ref.child('users').child(authData.uid).set({presence: 'online', began: Firebase.ServerValue.TIMESTAMP});
+                    ref.child('users').child(authData.uid).onDisconnect().set({presence'offline', Firebase.ServerValue.TIMESTAMP});
                 }
             });
 
             // Listen for location changing
             // We only take care within 10 km
             geoQuery.on("key_entered", function(key, location, distance) {
+                //actually receive the changing
                 console.log(key + " entered query at " + location + " (" + distance + " km from center)");
-                var data;
-                data.user = {
-                    key: key,
-                    location: location
-                }
-                candy(data);
-            });
 
+                //Listening for changed for users(whithin 10km only)
+                ref.child('users').child('uid').equalTo(key).on('child_changed', function(snapshot) {
+                    if(snapshot){
+                        var data;
+                        data.user = {
+                            key: key,
+                            location: location,
+                            info: snapshot.val()
+                        }
+                        candy(data);
+                    }
+                    else{
+                        console.log("no data fetched");
+                    }
+                });
+
+                //Listening for added for users(whithin 10km only)
+                ref.child('users').child('uid').equalTo(key).on('child_added', function(snapshot) {
+                    if(snapshot){
+                        var data;
+                        data.user = {
+                            key: key,
+                            location: location,
+                            info: snapshot.val()
+                        }
+                        candy(data);
+                    }
+                    else{
+                        console.log("no data fetched");
+                    }
+                });
+            });
         }else{
             console.log("authentication required");
         }

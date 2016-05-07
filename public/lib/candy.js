@@ -27,6 +27,8 @@
                 if(data.auth){
                     $("#header").hide();
                     $("#candy_guide").show();
+                    // Register user
+                    stream.user = data.auth;
 
                     if(initial){
                         initial = false;
@@ -36,10 +38,8 @@
                         });
                     }
                 }else if(data.user){
-                    // new user launch
-                    var user = {};
-                    user.data = data.user;
-                    sim.process(user);
+                    // Let the realtime process on
+                    sim.process(data);
                 }else{
                     console.log(data);
             }
