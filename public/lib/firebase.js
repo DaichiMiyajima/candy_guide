@@ -31,7 +31,7 @@
         ref.onAuth(function(authData){
             //auth was fine. Then set the userInfo
             if(authData){
-                ref.child('users').set({
+                ref.child('users').child(authData.uid).set({
                     uid:authData.uid,
                     provider: authData.provider,
                     name: authData.facebook.displayName,
@@ -61,17 +61,9 @@
         });
     }
 
-    firebase.onIdle = function () {
-        // not looking at page
-        ref.child('users').child('idle').child('presence').set('idle');
+    firebase.offAuth = function(){
+        ref.offAuth(function(){});
     }
-    firebase.onAway = function () {
-        ref.child('users').child('idle').child('presence').set('away');
-    }
-    firebase.onBack = function (isIdle, isAway) {
-        ref.child('users').child('idle').child('presence').set('online');
-    }
-
     // all realtime actions
     firebase.connect = function(candy){
 
@@ -82,30 +74,43 @@
             // Let the realtime process on
             var data = {};
             data.auth = authData;
-            ref.child('users').set({
+            ref.child('users').child(authData.uid).set({
                 uid:authData.uid,
                 provider: authData.provider,
                 name: authData.facebook.displayName,
                 profileimage:authData.facebook.profileImageURL,
             });
+
+            firebase.onIdle = function () {
+                // not looking at page
+                ref.child('users').child(ref.getAuth().uid).child('idle').child('presence').set('idle');
+            }
+            firebase.onAway = function () {
+                ref.child('users').child(ref.getAuth().uid).child('idle').child('presence').set('away');
+            }
+            firebase.onBack = function (isIdle, isAway) {
+                ref.child('users').child(ref.getAuth().uid).child('idle').child('presence').set('online');
+            }
+
+            // Listen for user idling
+            idle.on('value', function(snapshot) {
+                if (snapshot.val()) {
+                    // store timestamp
+                    // We do not store any session info.
+                    ref.child('users').child(ref.getAuth().uid).child('idle').update({presence: 'online', began: Firebase.ServerValue.TIMESTAMP});
+                    ref.child('users').child(ref.getAuth().uid).child('idle').onDisconnect().update({presence: 'offline', End: Firebase.ServerValue.TIMESTAMP});
+            }
+        });
+
+
+            candy(data);
+
         }
         else{
             // finally nothing happen for user
             console.log(ref);
         }
     
-        candy(data);
-
-        // Listen for user idling
-        idle.on('value', function(snapshot) {
-            if (snapshot.val()) {
-                // store timestamp
-                // We do not store any session info.
-                ref.child('users').child('idle').update({presence: 'online', began: Firebase.ServerValue.TIMESTAMP});
-                ref.child('users').child('idle').onDisconnect().update({presence: 'offline', End: Firebase.ServerValue.TIMESTAMP});
-            }
-        });
-
         // Listen for location changing
         // We only take care within 10 km
         geoQuery.on("key_entered", function(key, location, distance) {
@@ -113,15 +118,9 @@
             console.log(key + " entered query at " + location + " (" + distance + " km from center)");
 
             var data = {};
-            data.user = {
-                key: key,
-                location: location,
-                info: null,
-            }
-            //candy(data);
 
             //Listening for changed for users(whithin 10km only)
-            ref.child('users').on('value', function(snapshot) {
+            ref.child('users').orderByChild('uid').equalTo(key).on('child_changed', function(snapshot)  {
                 if(snapshot){
                     var data = {};
                     data.user = {
@@ -137,7 +136,7 @@
             });
 
             //Listening for added for users(whithin 10km only)
-            ref.child('users').on('value', function(snapshot) {
+            ref.child('users').orderByChild('uid').equalTo(key).on('child_added', function(snapshot)  {
                 if(snapshot){
                     var data = {};
                     data.user = {

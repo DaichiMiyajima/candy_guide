@@ -61,7 +61,7 @@
                     var img =new Image();
                     img.crossOrigin = "Anonymous";
                     img.src = data.user.info.profileimage;
-                    img.onload = function(){
+                    img.onload = function(that){
                         var bg = document.createElement("canvas");
                         bg.width = 54;
                         bg.height = 60;
@@ -82,6 +82,7 @@
                         bgCtx.drawImage(img, 2, 2,50,50);
 
                         icons[data.user.info.uid] = bg.toDataURL();
+                        markers[data.user.key].setIcon(icons[data.user.key]);
                     }
                 }
                 this();
@@ -102,7 +103,61 @@
                 }
                 // update idles
                 if(infoWindow[data.user.key] && data.user.info.idle.presence){
-                    infoWindow[data.user.key].setContent(data.user.info.idle.presence);
+
+                    if(!data.user.info.idle.presence == "offline"){
+                        var millis = (new Date()).getTime() - (new Date(data.user.info.idle.End)).getTime();
+                        var units   = {
+                            second: Math.round(millis/1000),
+                            minute: Math.round(millis/1000/60),
+                            hour:   Math.round(millis/1000/60/60),
+                            day:    Math.round(millis/1000/60/60/24),
+                            week:   Math.round(millis/1000/60/60/24/7),
+                            month:  Math.round(millis/1000/60/60/24/30), // aproximately
+                            year:   Math.round(millis/1000/60/60/24/365), // aproximately
+                        };
+                        var txt = "";
+                        for(var unit in units) { 
+                            var val = units[unit];
+                            if(val > 0) {
+                                txt = "";
+                                var u = val + " " + unit;
+                                if(val > 1) {
+                                    u = u + "s";
+                                }
+                                txt = u;
+                            }
+                        };
+                    }
+                    else{
+                        var a =  (new Date()).getTime();
+                        var b =  (new Date(data.user.info.idle.began)).getTime();
+                        var millis = (new Date()).getTime() - (new Date(data.user.info.idle.began)).getTime();
+                        var units   = {
+                            second: Math.round(millis/1000),
+                            minute: Math.round(millis/1000/60),
+                            hour:   Math.round(millis/1000/60/60),
+                            day:    Math.round(millis/1000/60/60/24),
+                            week:   Math.round(millis/1000/60/60/24/7),
+                            month:  Math.round(millis/1000/60/60/24/30), // aproximately
+                            year:   Math.round(millis/1000/60/60/24/365), // aproximately
+                        };
+
+                        var txt = "";
+                        for(var unit in units) { 
+                            var val = units[unit];
+                            if(val > 0) {
+                                txt = "";
+                                var u = val + " " + unit;
+                                if(val > 1) {
+                                    u = u + "s";
+                                }
+                                txt = u;
+                            }
+                        };
+                    }
+
+                    infoWindow[data.user.key].setContent(data.user.info.idle.presence + ": " + txt);
+
                 }else{
                 }
                 this();

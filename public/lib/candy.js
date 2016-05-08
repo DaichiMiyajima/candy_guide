@@ -22,7 +22,11 @@
             //App don't maintain any important state
             location.hash = "";
 
+            $("#header").show();
+            $("#candy_guide").hide();
+
             var connect = function(data){
+
                 // Authorization was fine
                 if(data.auth){
                     $("#header").hide();

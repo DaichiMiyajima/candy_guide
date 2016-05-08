@@ -25,11 +25,23 @@
                 idle.setAwayTimeout(2000);
                 idle.start();
             }
+        },
+        //logout
+        // click items activation
+        navigation: {
+            func: function navigation(sim, plugin){
+                // logout
+                $("#logout").on("click",function(){
+                    firebase.offAuth();
+                });
+            }
         }
+
     }
 
     window.initPlugins = [
         plugins.executeGPSPlugins,
-        plugins.startIdleTrace
+        plugins.startIdleTrace,
+        plugins.navigation
     ];
 })()
